@@ -2,9 +2,20 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import {v2 as cloudinary}  from "cloudinary";
 
 import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
+
+
 dotenv.config();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+
+})
 
 const mongoURI = process.env.MONGODB_URI;
 if (!mongoURI) {
@@ -29,6 +40,8 @@ app.use(express.urlencoded({extended: true})); //you must pass this before calli
 // route or else youll recieve an error
 
 app.use("/api/auth",authRoutes);
+app.use("/api/users",userRoutes);
+
  //to parse url encoded data
 
 
