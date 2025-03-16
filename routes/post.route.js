@@ -4,8 +4,8 @@ import { createPost, deletePost, commentonPost, likeUnlikePost, getAllPosts, get
 
 const router = express.Router();
 
-router.get("/all", protectRoute, (req, res, next) => {
-    console.log("Incoming get all posts request:", req.params.id);
+router.get("/all/:id", protectRoute, (req, res, next) => {
+    console.log("Incoming get all posts request");
     next();
 }, getAllPosts);
 
@@ -15,44 +15,33 @@ router.get("/likes/:id", protectRoute, (req, res, next) => {
 }, getLikedPosts);
 
 router.get("/following", protectRoute, (req, res, next) => {
-    console.log("Get posts of the user we follow:", req.params.id);
+    console.log("Get posts of the user we follow:", req.user._id);
     next();
 }, getFollowingPosts);
 
 router.get("/user/:username", protectRoute, (req, res, next) => {
-    console.log("Get user Posts:", req.params.id);
+    console.log("Get user Posts:", req.params.username);
     next();
 }, getUserPosts);
 
-
-
-
-
-
-
-
-
-
 router.post("/create", protectRoute, (req, res, next) => {
-    console.log('Incoming POST request to /create:', req.params.id);
-    next(); // Continue to the createPost controller
+    console.log('Incoming POST request to /create from user:', req.user._id);
+    next();
 }, createPost);
 
-router.delete("/:id", protectRoute, (req,res,  next) => {
+router.delete("/:id", protectRoute, (req, res, next) => {
     console.log('Hit DELETE route, Post ID:', req.params.id);
     next();
 }, deletePost);
 
-
-router.post("/like/:id", protectRoute,  (req,res, next)=> {
+router.post("/like/:id", protectRoute, (req, res, next) => {
     console.log('Like the POST, Post ID:', req.params.id);
     next();
 }, likeUnlikePost);
-router.post("/comment/:id", protectRoute, commentonPost)
 
-
-
-
-
+router.post("/comment/:id", protectRoute, (req, res, next) => {
+    console.log('Commenting on POST, Post ID:', req.params.id);
+    next();
+}, commentonPost);
 
 export default router;
